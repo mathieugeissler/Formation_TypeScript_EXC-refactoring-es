@@ -1,8 +1,11 @@
 import fetch from 'node-fetch';
+import { RandomUserApiResponse } from './model/user-random-api';
+import { RandomUser } from './model/user-random';
+
 const API = 'https://randomuser.me/api';
 
-async function generateRandomUser(...userNationalities: Array<Nationality>) {
-  const usersCreated: Array<RandomUser> = [];
+async function generateRandomUser(...userNationalities: Array<RandomUser.Nationality>) {
+  const usersCreated: Array<RandomUser.User> = [];
   for (const nat of userNationalities) {
     const criteria: Map<string, string> = new Map();
     criteria.set('nat', nat);
@@ -16,7 +19,7 @@ async function generateRandomUser(...userNationalities: Array<Nationality>) {
   console.log(usersCreated);
 }
 
-async function getRandomUser(criterias: Map<string, string>): Promise<RandomUser> {
+async function getRandomUser(criterias: Map<string, string>): Promise<RandomUser.User> {
   console.log('DEBUG -- Generate user with criterias', criterias);
   let url = `${API}`;
   if (criterias && criterias.size) {
@@ -43,84 +46,3 @@ async function getRandomUser(criterias: Map<string, string>): Promise<RandomUser
 }
 
 generateRandomUser('FR', 'DE');
-
-type Nationality = string;
-
-interface RandomUserApiResponse {
-  info: RandomUserApiInfo;
-  results: Array<RandomUser>;
-}
-
-interface RandomUserApiInfo {
-  page: number
-  results: number
-  seed: string;
-  version: string;
-}
-
-interface RandomUserName {
-  title: string,
-  first: string,
-  last: string,
-}
-
-interface RandomUserLocation {
-  street: {
-    number: number;
-    name: string;
-  };
-  city: string,
-  state: string,
-  country: string,
-  postcode: number,
-  coordinates: {
-    latitude: string,
-    longitude: string,
-  },
-  timezone: {
-    offset: string,
-    description: string,
-  },
-}
-
-interface RandomUserLogin {
-  uuid: string,
-  username: string,
-  password: string,
-  salt: string,
-  md5: string,
-  sha1: string,
-  sha256: string,
-}
-
-interface RandomUserAge {
-  date: string;
-  age: number;
-}
-
-interface RandomUserId {
-  name: string,
-  value: string,
-}
-
-interface RandomUserPicture {
-  large: string;
-  medium: string;
-  thumbnail: string;
-}
-
-interface RandomUser {
-  gender: string;
-  name: RandomUserName;
-  location: RandomUserLocation;
-  email: string;
-  login: RandomUserLogin;
-  dob: RandomUserAge;
-  registered: RandomUserAge;
-  phone: string,
-  cell: string,
-  id: RandomUserId;
-  picture: RandomUserPicture;
-  nat: Nationality | Array<Nationality>,
-}
-
