@@ -11,6 +11,9 @@
           "program": "${workspaceFolder}/src/refactoring.ts",
           "sourceMaps": true,
           "trace": "all",
+          "env": {
+            "NODE_TLS_REJECT_UNAUTHORIZED": "0"
+          },
           "outFiles": [
               "${workspaceFolder}/build/**/*.js"
           ]
